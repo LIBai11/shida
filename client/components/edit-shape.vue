@@ -93,19 +93,18 @@ export default {
           newTop = height / 2;
         }
       }
-      const style = {
+      return {
         marginLeft: hasL || hasR ? "-5px" : 0,
         marginTop: hasT || hasB ? "-5px" : 0,
         left: `${newLeft}px`,
         top: `${newTop}px`,
         cursor:
-          point
-            .split("")
-            .reverse()
-            .map(m => this.directionKey[m])
-            .join("") + "-resize"
+            point
+                .split("")
+                .reverse()
+                .map(m => this.directionKey[m])
+                .join("") + "-resize"
       };
-      return style;
     },
     /**
      * 点击事件，点击后设置当前元素为选中元素
@@ -148,7 +147,7 @@ export default {
         }
         document.removeEventListener("mousemove", move, true);
         document.removeEventListener("mouseup", up, true);
-      };
+      }
       document.addEventListener("mousemove", move, true);
       document.addEventListener("mouseup", up, true);
       return true;
@@ -156,10 +155,11 @@ export default {
     /**
      * 鼠标点击可以的按钮resize事件
      * @param point
-     * @param downEvent
      */
     handleMouseDownOnPoint(point) {
       let downEvent = event;
+      console.log("出发")
+
       // 抛出事件让父组件设置当前元素选中状态
       this.$emit("handleElementClick");
       downEvent.stopPropagation();

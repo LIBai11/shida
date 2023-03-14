@@ -145,11 +145,12 @@ module.exports = app => ({
   /**
    * 获取页面详情
    * @param id
+   * @param isWx
    * @returns {Promise<*>}
    */
-  async getPageDetail(id) {
+  async getPageDetail(id,isWx=false) {
     const { $model } = app;
-    return await $model.page.findById(id).exec();
+    return isWx? await $model.page.findById(id).lean().exec() :await $model.page.findById(id).exec();
   },
 
   /**
