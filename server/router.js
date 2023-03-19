@@ -73,6 +73,10 @@ module.exports = app => {
     router.post("/wx/login/binding", $controller.wxUser.binding)
     router.post("/wx/user/info", $controller.wxUser.getWxUserInfo)
     router.post("/wx/user/like", $controller.wxUser.getWxUserLike)
+    router.post("/wx/user/comment", $controller.wxVideo.comment)
     router.get("/wx/video/detail", $controller.wxVideo.getDetailVideo)
+    router.post("/wx/video/index", $controller.wxVideo.getRandomVideo)
+    router.post("/wx/video/like", $controller.wxVideo.handleLikeAction)
+    router.post("/wx/video/comment", $controller.wxVideo.getComment)
     return router;
 };

@@ -104,11 +104,11 @@ module.exports = app => ({
     /**
      * 查询用户喜欢的数量
      * @returns {Promise<void>}
-     * @param data
+     * @param uuid
      */
-    async getWxUserLikes(data) {
+    async getWxUserLikes(uuid) {
         const {ctx, $model} = app;
-        return await $model.userInfo.findOne({wxUuid: data.uuid})
+        return await $model.userInfo.findOne({wxUuid: uuid})
             .select('like')
             .select('-_id')
             // .skip(data.page * (data.limit || 10))

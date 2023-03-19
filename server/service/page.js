@@ -150,6 +150,9 @@ module.exports = app => ({
    */
   async getPageDetail(id,isWx=false) {
     const { $model } = app;
+    if(!id) {
+      return await $model.page.aggregate([{ $sample: { size: 1 } }])
+    }
     return isWx? await $model.page.findById(id).lean().exec() :await $model.page.findById(id).exec();
   },
 

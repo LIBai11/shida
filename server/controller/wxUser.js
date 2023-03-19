@@ -97,13 +97,16 @@ module.exports = app => ({
                 $helper.returnBody(false, '', "用户信息获取失败")
             }
         },
+        /**
+         * 获取喜欢数量
+         * @returns {Promise<void>}
+         */
         async getWxUserLike() {
             const {$service, $helper, ctx, $controller} = app
             const data = ctx.request.body
-            const {like} = await $service.wxUser.getWxUserLikes(data)
+            const {like} = await $service.wxUser.getWxUserLikes(data.uuid)
             const returnBody = {total: like.length, like}
             $helper.returnBody(true, returnBody, "success")
-
         }
     }
 )
