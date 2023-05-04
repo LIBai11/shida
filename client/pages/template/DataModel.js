@@ -1,5 +1,5 @@
-import { createUUID, deepClone } from '../../../common/uitls';
-import { cloneDeep, merge, random, sortBy } from 'lodash';
+import {createUUID, deepClone} from '../../../common/uitls';
+import {cloneDeep, merge, random, sortBy} from 'lodash';
 import $config from '@client/config';
 
 // 元素配置信息字段
@@ -70,16 +70,16 @@ let pageConfig = {
 // 项目配置信息字段
 let projectConfig = {
   name: "",
-  title: "视搭视频",
-  description: "我用视搭可视化编辑器做了一个超酷炫的视频，快来看看吧。",
-  isTemplate:true,
+  title: "秀视视频",
+  description: "我用秀视可视化编辑器做了一个超酷炫的视频，快来看看吧。",
+  isTemplate: true,
   coverImage: "",
   author: "",
   script: "",
   width: $config.canvasH5Width,
   height: $config.canvasH5Height,
   pages: [],
-  templateId:"",
+  templateId: "",
 };
 
 let getElementConfig = function (element, extendStyle = {}) {
@@ -216,7 +216,7 @@ const cloneToVideoData = projectData => {
       elements: []
     });
   }
-  
+
   return videoData;
 };
 
@@ -288,13 +288,27 @@ const processingProjectData = (projectData) => {
 
   const newData = deepClone(projectData);
 
-    for (let i = 0; i < newData.pages.length; i++) {
-      const page = newData.pages[i];
-      for (let element of page.elements) {
-        const text = [...element.tag.text]
-        if (element.tag.text.length > 0) {
-          let propsAttrName
-          propsAttrName = getPropsAttrValue(element.elName)
+  for (let i = 0; i < newData.pages.length; i++) {
+    const page = newData.pages[i];
+    // for (let element of page.elements) {
+    //   const text = [...element.tag.text]
+    //   if (element.tag.text.length > 0) {
+    //     let propsAttrName
+    //     propsAttrName = getPropsAttrValue(element.elName)
+    //     page.elements = sortBy(page.elements, o => o.commonStyle.zIndex);
+    //     for (let j = page.elements.length - 1; j >= 0; j--) {
+    //       const element = page.elements[j];
+    //       if (element.elName === "qk-bg-music") {
+    //         page.elements.splice(j, 1);
+    //       }
+    //     }
+    //     const randomResource = getRandomResource(text[0])
+    //     // if (!randomResource) {
+    //     //   element.propsValue[propsAttrName] = `${instancePath}${text[0]}/${randomResource}`
+    //     // }
+    //     // console.log(randomResource)
+    //   }
+    // }
 
     page.elements = sortBy(page.elements, o => o.commonStyle.zIndex);
     for (let j = page.elements.length - 1; j >= 0; j--) {
@@ -303,23 +317,7 @@ const processingProjectData = (projectData) => {
         page.elements.splice(j, 1);
       }
     }
-          const randomResource = getRandomResource(text[0])
-          // if (!randomResource) {
-          //   element.propsValue[propsAttrName] = `${instancePath}${text[0]}/${randomResource}`
-          // }
-          // console.log(randomResource)
-        }
-      }
-
-      page.elements = sortBy(page.elements, o => o.commonStyle.zIndex);
-      for (let j = page.elements.length - 1; j >= 0; j--) {
-        const element = page.elements[j];
-        if (element.elName === "qk-bg-music") {
-          page.elements.splice(j, 1);
-        }
-      }
-    }
-
+  }
 
 
   // console.log(componentType)

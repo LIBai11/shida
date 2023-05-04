@@ -1,7 +1,7 @@
 <template>
   <div class="page page-login">
     <div class="login-page-inner">
-      <p class="title">视搭</p>
+      <p class="title">秀视</p>
       <el-form :model="formData" :rules="formRules" ref="loginForm" label-width="0px">
         <el-form-item prop="username">
           <el-input
@@ -134,7 +134,7 @@ export default {
         }
       });
     },
-    switchType() { 
+    switchType() {
       if (this.type === "login") {
         this.type = "register";
       } else {

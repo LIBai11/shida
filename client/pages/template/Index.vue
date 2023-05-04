@@ -13,14 +13,14 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    
+
     <!--组件&页面&模板-->
     <div class="editor-page-edit-wrapper">
       <componentLibs v-if="activeSideBar === 'componentLibs'"/>
       <pageManage v-if="activeSideBar === 'pageManage'"/>
       <templateLibs v-if="activeSideBar === 'templateLibs'"/>
     </div>
-    
+
     <!--页面编辑区域-->
     <div class="editor-main" @contextmenu="onContextmenu">
       <div class="control-bar-wrapper">
@@ -34,7 +34,7 @@
       </div>
       <editorPan :scale.sync="canvasConfig.scale"/>
     </div>
-    
+
     <!--属性编辑区域-->
     <div class="el-attr-edit-wrapper scrollbar-wrapper">
       <el-tabs v-model="activeAttr" stretch>
@@ -49,7 +49,7 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    
+
     <!--预览-->
     <makingPanel
       v-if="showMakingPanel"
@@ -92,7 +92,7 @@ export default {
     controlBar,
     makingPanel
   },
-  
+
   data() {
     return {
       id: "", // 当前页面id
@@ -154,7 +154,7 @@ export default {
           if(type === 'newTemplate' || type === 'editTemplate'){
             this.projectData.isTemplate = true
             this.projectData.isPublish = false
-  
+
           }else if(type === 'useTemplate'){
             this.projectData.isTemplate = false
             this.projectData.isPublish = true
@@ -162,7 +162,7 @@ export default {
             this.projectData.isTemplate = true
             this.projectData.title = `${this.projectData.title}_副本`
             this.projectData.isPublish = false
-  
+
           }
           // console.log("-----------",res.body.isTemplate);
           this.projectData.templateId = res.body._id
@@ -172,8 +172,8 @@ export default {
           this.loading = false;
         });
     },
-    
-    
+
+
     /**
      * 更新
      */
@@ -185,7 +185,7 @@ export default {
         this.showMakingPanel = false;
       });
     },
-    
+
     /**
      * 保存
      */
@@ -202,14 +202,14 @@ export default {
         .catch(() => {
         });
     },
-    
+
     /**
      * 发布----
      */
     async publishFn() {
-  
+
       //先改名-改过了就不进行
-      if (this.projectData.title === '视搭视频'){
+      if (this.projectData.title === '秀视视频'){
         this.$prompt("请输入标题", "提示", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -232,9 +232,9 @@ export default {
         this.$API.templateUpdatePage({pageData: data})
         this.$nextTick(() => $bus.$emit("publishTemplate"));
       }
-     
+
     },
-    
+
     async showPreviewFn() {
       // await this.screenshots()
       // 提交数据再预览
@@ -242,7 +242,7 @@ export default {
         this.showMakingPanel = true;
       });
     },
-    
+
     /**
      * 退出
      */
@@ -258,7 +258,7 @@ export default {
         .catch(() => {
         });
     },
-    
+
     /**
      * 提供截屏作为项目主图
      */
@@ -271,7 +271,7 @@ export default {
           const {file} = this.$mUtils.canvasToFile({canvas, quality: 0.6, type: "jpeg"});
           const params = new FormData();
           params.append("file", file);
-          
+
           this.$axios
             .post("/common/uploadFile", params)
             .then(res => {
@@ -285,7 +285,7 @@ export default {
         });
       });
     },
-    
+
     /**
      *
      * @param psdData
@@ -314,7 +314,7 @@ export default {
         }, 10);
       });
     },
-    
+
     onContextmenu(e) {
       e.preventDefault();
       return false;
@@ -342,22 +342,22 @@ export default {
   display: flex;
   height: 100%;
   position: relative;
-  
+
   .editor-side-bar {
     width: 55px;
   }
-  
+
   .editor-page-edit-wrapper {
     width: 210px;
     padding: 0 1px;
   }
-  
+
   .editor-main {
     flex: 1;
     background: #f0f2f5;
     position: relative;
   }
-  
+
   .el-attr-edit-wrapper {
     width: 380px;
     padding: 0;
@@ -393,14 +393,14 @@ export default {
     padding-right: 16px;
     padding-bottom: 10px;
   }
-  
+
   .el-tabs__content {
     height: calc(100% - 55px);
-    
+
     & > div {
       height: 100%;
     }
-    
+
     .attr-edit-inner {
       padding-left: 16px;
       padding-right: 16px;

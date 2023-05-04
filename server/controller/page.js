@@ -137,7 +137,8 @@ module.exports = app => ({
   async getPublishTemplates() {
     const { ctx, $service, $helper } = app;
     let { pageMode } = ctx.request.query;
-    const pages = await $service.page.getPublishTemplates(pageMode);
+    let id = ctx.request.query.id
+    const pages = await $service.page.getPublishTemplates(pageMode,id);
     $helper.returnBody(true, pages);
   },
   /**

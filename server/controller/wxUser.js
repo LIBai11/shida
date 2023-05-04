@@ -1,6 +1,6 @@
 const axios = require("axios");
 const querystring = require('node:querystring');
-const shortid = require("_js-shortid@0.1.1@js-shortid");
+const shortid = require("js-shortid");
 const lodash = require("lodash");
 const {omit} = require("lodash");
 
@@ -104,8 +104,13 @@ module.exports = app => ({
         async getWxUserLike() {
             const {$service, $helper, ctx, $controller} = app
             const data = ctx.request.body
-            const {like} = await $service.wxUser.getWxUserLikes(data.uuid)
-            const returnBody = {total: like.length, like}
+            let returnBody
+            try {
+                const {like} = await $service.wxUser.getWxUserLikes(data.uuid)
+                returnBody = {total: like.length, like}
+            }catch (e) {
+                returnBody = {total: 0, like: []}
+            }
             $helper.returnBody(true, returnBody, "success")
         }
     }

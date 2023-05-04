@@ -1,6 +1,7 @@
 const lodash = require('lodash')
 const fs = require('fs')
 const path = require('path')
+const {ObjectId} = require("mongodb");
 
 /**
  * 删除模板对应的资源文件夹文件夹
@@ -226,17 +227,21 @@ module.exports = app => ({
   /**
    * 获取模板市场所有模板
    * @param pageMode
+   * @param id
    * @returns {Promise<*>}
    */
-  async getPublishTemplates(pageMode) {
+  async getPublishTemplates(pageMode,id) {
     const { $model } = app;
     let query = { isPublish: true, isTemplate: true };
     if (pageMode) {
       query.pageMode = pageMode;
     }
-    return await $model.page
-      .find(query)
-      .select('_id title coverImage')
-      .exec();
+    if(id) {
+      query._id = ObjectId(id)
+    }
+    return  await $model.page
+        .find(query)
+        .select('_id title coverImage')
+        .exec();
   },
 });

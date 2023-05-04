@@ -66,15 +66,14 @@ let pageConfig = {
 // 项目配置信息字段
 let projectConfig = {
   name: "",
-  title: "视搭视频",
-  description: "我用视搭可视化编辑器做了一个超酷炫的视频，快来看看吧。",
+  title: "秀视视频",
+  description: "我用秀视可视化编辑器做了一个超酷炫的视频，快来看看吧。",
   coverImage: "",
   author: "",
   script: "",
   width: $config.canvasH5Width,
   height: $config.canvasH5Height,
   pages: [],
-
 };
 
 let getElementConfig = function(element, extendStyle = {}) {

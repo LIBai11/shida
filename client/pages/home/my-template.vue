@@ -1,7 +1,7 @@
 <template>
   <div class="clearfix my-page-list">
-    
- 
+
+
     <div class="page-search-wrapper bg-white">
       <el-tabs v-model="searchParams.pageMode" @tab-click="handlePageModeClick">
         <el-tab-pane :name="item.value" :disabled="item.disabled" v-for="(item, index) in pageModeList" :key="index">
@@ -24,7 +24,6 @@
                 @refresh="getPageList"
                 @showPreview="showPreviewFn"
                 :pageData="item"
-
                 :btnList="['edit', 'useTemplate', 'publishTemplate', 'delete','copyTemplate']"
                 :showPublishState="false"
               />
@@ -85,6 +84,7 @@ export default {
     getPageList() {
       this.$API.getMyTemplates(this.searchParams).then(res => {
         this.pageList = res.body || [];
+        console.log()
       });
     },
     showPreviewFn(id) {

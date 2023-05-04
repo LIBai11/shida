@@ -1,9 +1,3 @@
-const axios = require("axios");
-const querystring = require('node:querystring');
-const shortid = require("_js-shortid@0.1.1@js-shortid");
-const lodash = require("lodash");
-const {omit} = require("lodash");
-
 module.exports = app => ({
         async getDetailVideo() {
             const {ctx, $service, $helper, $controller} = app;
@@ -29,6 +23,7 @@ module.exports = app => ({
                     isCurUserLiked
                 }, '获取成功')
             } catch (e) {
+                console.log(e)
                 $helper.returnBody(false, '', '获取失败', 500)
             }
         },
@@ -39,7 +34,6 @@ module.exports = app => ({
                 //videoInfo 里的like加1,
                 const pageData = await $service.page.getPageDetail(pageId, true);
                 const res = await $service.wxVideo.like(userId, pageData)
-
                 $helper.returnBody(true, res, '成功')
             } catch (e) {
                 $helper.returnBody(false, '', '失败')

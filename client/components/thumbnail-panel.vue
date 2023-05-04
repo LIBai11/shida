@@ -5,10 +5,10 @@
         <div class='details-btn' @click='preview(pageData._id)'>预览</div>
       </div>
       <div class='image-wrapper'>
-        <img :src='pageData.coverImage || defaultCoverImage' alt />
+        <img :src="pageData.coverImage || defaultCoverImage" alt />
       </div>
     </div>
-    
+
     <div class='page-item-title border-T ellipsis'>
       <span class='item-title-i' :title='pageData.title'>{{ pageData.title || '未命名作品' }}</span>
     </div>
@@ -39,7 +39,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class='page-thumbnail-panel create' v-loading='loading' v-else>
     <div class='temp-create' @click='newPage(isTemplate)'>
       <i class='el-icon-plus'></i>
@@ -77,7 +77,7 @@ export default {
       },
     },
   },
-  
+
   components: {
     [Dropdown.name]: Dropdown,
     [DropdownMenu.name]: DropdownMenu,
@@ -102,6 +102,11 @@ export default {
           iconClass: '',
         },
         {
+          title: '公开模板',
+          eventType: 'publishTemplate',
+          iconClass: '',
+        },
+        {
           title: '协作设置',
           eventType: 'cooperation',
           iconClass: '',
@@ -121,47 +126,47 @@ export default {
       ],
     };
   },
-  
+
   methods: {
     command(type) {
       switch (type) {
         case 'publish':
           this.publish();
           break;
-        
+
         case 'copyUrl':
           this.copyUrl();
           break;
-        
+
         case 'setTemplate':
           this.setTemplate();
           break;
-        
+
         case 'viewPageData':
           this.viewPageData();
           break;
-        
+
         case 'cooperation':
           this.cooperation();
           break;
-        
+
         case 'delete':
           this.delete();
           break;
-        
+
         case 'unCooperation':
           this.unCooperation();
           break;
-        
+
         case 'publishTemplate':
           this.publishTemplate();
           break;
       }
     },
-    
+
     // 新建页面
     newPage(isTemplate) {
-      
+
       let newPageData = editorProjectConfig.getProjectConfig();
       newPageData.isTemplate = isTemplate;
       this.loading = true;
@@ -175,14 +180,14 @@ export default {
             } else {
               this.$router.push({ name: 'Template', query: { id: res.body._id }, params:{type: 'newTemplate'} });
             }
-            
+
           }
         })
         .catch(() => {
           this.loading = false;
         });
     },
-    
+
     // 编辑
     edit() {
       if (!this.isTemplate) {
@@ -191,7 +196,7 @@ export default {
         this.$router.push({ name: 'Template', query: { id: this.pageData._id }, params:{type: 'editTemplate'} });
       }
     },
-    
+
     // 复制页面
     copyPage() {
       this.loading = true;
@@ -216,9 +221,9 @@ export default {
             this.loading = false;
           });
       }
-     
+
     },
-    
+
     // 发布 ----
     publish() {
       this.loading = true;
@@ -234,16 +239,16 @@ export default {
           this.loading = false;
         });
     },
-    
+
     // 预览
     preview(id) {
       this.$emit('showPreview', id);
     },
-    
+
     // 复制链接
     copyUrl() {
     },
-    
+
     // 设为我的模板
     setTemplate() {
       this.loading = true;
@@ -257,7 +262,7 @@ export default {
           this.loading = false;
         });
     },
-    
+
     // 页面数据
     viewPageData() {
       this.$router.push({
@@ -265,12 +270,12 @@ export default {
         query: { id: this.pageData._id },
       });
     },
-    
+
     // 协作设置
     cooperation() {
       addCooperationer(this.pageData._id);
     },
-    
+
     // 删除
     delete() {
       this.$alert('确认删除页面？删除后，将无法访问此页面?', '操作提示', {
@@ -284,7 +289,7 @@ export default {
         });
       });
     },
-    
+
     // 退出协作
     unCooperation() {
       this.$alert('确认退出协作编辑？退出后，将无法编辑此页面?', '操作提示', {
@@ -303,7 +308,7 @@ export default {
           });
       });
     },
-    
+
     // 发布模板到模板市场
     publishTemplate() {
       this.loading = true;
@@ -332,16 +337,16 @@ export default {
   background: white;
   position: relative;
   transition: all 0.28s;
-  
+
   &:hover {
     box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.16);
     transform: translate3d(0, -2px, 0);
-    
+
     .header-mask {
       opacity: 1;
     }
   }
-  
+
   .header-mask {
     position: absolute;
     top: 0;
@@ -354,7 +359,7 @@ export default {
     padding-top: 92px;
     text-align: center;
     transition: top 0.28s ease, opacity 0.28s ease, height 0.28s ease;
-    
+
     .details-btn {
       display: inline-block;
       width: 120px;
@@ -372,14 +377,14 @@ export default {
 .thumbnail-panel-cover {
   flex: 1;
   position: relative;
-  
+
   .image-wrapper {
     width: 100%;
     height: 100%;
     overflow: hidden;
     padding: 5px;
     z-index: 10;
-    
+
     img {
       display: block;
       width: 100%;
@@ -400,7 +405,7 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: row;
-  
+
   .btn-wrapper {
     flex: 1;
     text-align: center;
@@ -426,7 +431,7 @@ export default {
 .page-thumbnail-panel.create {
   padding: 16px;
   text-align: center;
-  
+
   .temp-create {
     display: inline-block;
     width: 100%;
@@ -436,13 +441,13 @@ export default {
     padding-top: 100px;
     transition: all 0.28s;
     cursor: pointer;
-    
+
     &:hover {
       color: $primary;
       border-color: $primary;
     }
   }
-  
+
   .null-create {
     display: inline-block;
     width: 100%;
@@ -451,7 +456,7 @@ export default {
     border: 1px solid #4a4e52;
     transition: all 0.28s;
     cursor: pointer;
-    
+
     &:hover {
       color: $primary;
       border-color: $primary;

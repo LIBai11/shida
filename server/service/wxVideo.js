@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const shortid = require("_js-shortid@0.1.1@js-shortid");
+const shortid = require("js-shortid");
 module.exports = app => ({
         async getVideoInfo(pageId, author) {
             const {$model} = app;

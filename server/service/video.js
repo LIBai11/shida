@@ -5,6 +5,7 @@ const {isEmpty, forEach} = require('lodash');
 const {FFRect, FFScene, FFImage, FFText, FFGifImage, FFVideo, FFAlbum, FFCreator} = require('ffcreator');
 const ffmpeg = require('fluent-ffmpeg');
 const {scaleVideoByCenter} = require("../../utils/crop");
+const {ObjectID} = require("mongodb");
 
 
 const fontRootPath = path.join(__dirname, '../public/static/fonts/');
@@ -28,11 +29,18 @@ const addComponent = async element => {
     const x = left + width / 2;
     const y = top + height / 2;
     const commomStyle = {x, y, width, height};
+    // console.log(11111)
 
     const getNetPath = url => {
         if (/^(http|https|www)/gi.test(url)) return url;
-        if (/^(\/static|\\static)/gi.test(url)) return path.join(__dirname, '../public', url);
-        if (/^(\/resource|\\resource)/gi.test(url)) return path.join(__dirname, '../public', url);
+        if (/^(\/static|\\static)/gi.test(url)) {
+            // console.log(11111)
+            return path.join(__dirname, '../public', url);
+        }
+        if (/^(\/resource|\\resource)/gi.test(url)){
+            // console.log(12222)
+            return path.join(__dirname, '../public', url);
+        }
         return url;
     };
 
@@ -45,8 +53,9 @@ const addComponent = async element => {
     switch (element.elName) {
         case 'qk-image':
             url = getImgPath(element.propsValue);
-            console.log(element.propsValue)
+            // console.log(element.propsValue)
             const imgExt = path.extname(url).split('.').pop()
+            // console.log(44,url)
             imgExt.toUpperCase() === 'GIF'
                 ? comp = new FFGifImage({path: url, ...commomStyle})
                 : comp = new FFImage({path: url, ...commomStyle})
@@ -65,18 +74,18 @@ const addComponent = async element => {
             comp.setStyle(element.commonStyle);
             if (fs.pathExistsSync(fontFile)) {
                 comp.setFont(fontFile);
-            } else {
-                comp.setFont('../public/static/demo/wryh.ttf');
             }
-
-
+            // else {
+            //     comp.setFont('../public/static/demo/云峰飞云体.ttf');
+            // }
             comp.setAnchor(0.5);
             comp.alignCenter();
             break;
 
         case 'qk-video':
+            // console.log(2332)
             url = getNetPath(element.propsValue.videoSrc);
-            console.log(url)
+            // console.log(url)
             // url = path.join(__dirname, '../public', element.propsValue.videoSrc)
             let videoUrlCropped = ''
             videoUrlCropped = `${path.dirname(url)}/${path.basename(url).split('.')
@@ -91,6 +100,7 @@ const addComponent = async element => {
 
 
         case 'qk-image-carousel':
+            // console.log(2122)
             // console.log("carousel")
             const list = element.propsValue.imageSrcList.map(x => getImgPath({imageSrc: x}));
             comp = new FFAlbum({list, showCover: true, ...commomStyle});
@@ -100,6 +110,7 @@ const addComponent = async element => {
     }
 
     if (!isEmpty(element.animations)) {
+        // console.log(212)
         forEach(element.animations, ani => {
             const {type, duration = 1, delay = 1} = ani;
             comp.addEffect(type, duration, delay);
@@ -110,6 +121,7 @@ const addComponent = async element => {
 };
 
 const cleanCacheFolder = async folderId => {
+    // console.log(123123123)
     const cacheDir = path.join(__dirname, '../public/resource/images', `${folderId}`);
     await fs.emptyDir(cacheDir);
     await fs.remove(cacheDir);
@@ -145,8 +157,6 @@ async function getVideoScreenshot(inputVideo, saveDir, fileName) {
 
 // 服务类
 module.exports = app => ({
-
-
     async createFFTask({videoData, folderId, uuid}, id) {
         const {ctx, $model} = app;
         const {width, height, fps, audio} = videoData;
@@ -154,7 +164,7 @@ module.exports = app => ({
         const cacheDir = path.join(__dirname, '../cache/', id)
         const localAudio = audio ? path.join(__dirname, '../public', audio) : null;
 
-        const creator = new FFCreator({
+        const config = {
             cacheDir,
             outputDir,
             width,
@@ -163,12 +173,15 @@ module.exports = app => ({
             audio: localAudio,
             debug: false,
             parallel: 8,
-        });
+        }
+        if(audio) {
+            config.audio = localAudio
+        }
+        const creator = new FFCreator(config);
 
         for (let i = 0; i < videoData.pages.length; i++) {
             const page = videoData.pages[i];
             const {duration, transDuration, trans, backgroundColor} = page.data;
-
             const scene = new FFScene();
             scene.setBgColor(backgroundColor);
             scene.setDuration(duration);
@@ -178,12 +191,15 @@ module.exports = app => ({
             for (let j = 0; j < page.elements.length; j++) {
                 const element = page.elements[j];
                 const comp = await addComponent(element);
+                // console.log(132)
                 if (comp) scene.addChild(comp);
+                // console.log(142)
             }
+
         }
         creator.start();
         //creator.openLog();
-
+        // console.log(44)
         let videoDB;
         let index = 0;
         creator.on('start', () => {
@@ -212,8 +228,12 @@ module.exports = app => ({
             const {_id} = videoDB;
             const file = e.output;
             const videoFileName = e.output.replace(outputDir, '');
+            // console.log(55)
             getVideoScreenshot(e.output, outputDir, videoFileName.replace('mp4', 'jpg'));
             $model.video.updateOne({_id}, {$set: {state: 'complete', file}});
+            // console.log(outputDir, videoFileName.replace('mp4', 'jpg'))
+            console.log("id:",id)
+            $model.page.updateOne({_id: id}, {$set: {coverImage: outputDir +videoFileName.replace('mp4', 'jpg') }});
             console.log(`FFCreator completed: \n USEAGE: ${e.useage} \n PATH: ${file} `);
         });
 
