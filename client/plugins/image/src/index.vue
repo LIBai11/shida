@@ -1,7 +1,7 @@
 <!--test.vue-->
 <template>
   <div class='qk-image'>
-    <img :src='imageUrl' alt='' />
+    <img :src='imageUrl' alt=''/>
   </div>
 </template>
 
@@ -15,9 +15,10 @@ export default {
     },
   },
   computed: {
-    imageUrl(){
-      if(this.imageSrc.includes('static')) return this.imageSrc
-        return 'resource' + this.imageSrc.split('resource')[1];
+    imageUrl() {
+      if(this.imageSrc.includes('/resource/resource/')) return this.imageSrc
+      if (this.imageSrc.includes('static')) return this.imageSrc
+      return 'resource' + this.imageSrc.split('resource')[1];
     },
   },
 };

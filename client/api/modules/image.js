@@ -10,3 +10,5 @@ export const uploadMultipleImages = p => $axios.post("/quark/images/uploadMultip
 export const templateUploadMultipleImages = p => $axios.post("/quark/images/templateUploadMultipleImages", p);
 export const uploadCommonImage = p => $axios.post("/quark/imageCommon/upload", p);
 export const uploadFile = p => $axios.post("/quark/file/upload", p);
+export const uploadFileRes = p => $axios.post("/quark/file/uploadRes", p);
+export const getAllRes = (p) => $axios.post("/quark/file/getAllRes",p);

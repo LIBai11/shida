@@ -8,6 +8,7 @@ export const getPageDetail = p => $axios.get("/quark/page/detail", p);
 export const createPage = p => $axios.post("/quark/page/create", p);
 // 更新页面
 export const updatePage = (p = {}) => {
+  console.log(p)
   let { version = 1 } = p.pageData;
   version = parseInt(version);
   version++;
@@ -39,6 +40,7 @@ export const publishPage = p => $axios.post("/quark/page/setPublish", p);
  * */
 // 获取我的模板
 export const getMyTemplates = p => $axios.get("/quark/page/getMyTemplates", p);
+export const getWorks = p => $axios.get("/quark/page/admin");
 
 /**
  * ========================================================================

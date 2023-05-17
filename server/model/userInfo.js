@@ -79,7 +79,6 @@ module.exports = app => {
                 type: String,
                 default: ''
             }
-
         },
         {timestamps: {createdAt: "created", updatedAt: "updated"}}
     );

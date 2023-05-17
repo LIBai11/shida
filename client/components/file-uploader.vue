@@ -10,9 +10,9 @@
           :before-upload='beforeUpload'
         >
           <span v-if="type === 'image'">
-            <img :src='imageUrl' v-if='value' />
-            <i v-else class='el-icon-plus icon-size'></i
-            ></span>
+            <img :src='imageUrl' v-if='value'  alt=""/>
+            <i v-else class='el-icon-plus icon-size'/>
+          </span>
           <span v-else-if="type === 'music'"> <i class='el-icon-service icon-size'></i></span>
           <span v-else-if="type === 'video'"> <i class='el-icon-upload icon-size'></i></span>
         </el-upload>

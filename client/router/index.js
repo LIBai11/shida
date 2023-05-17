@@ -42,7 +42,18 @@ export default new Router({
               path: "template-list",
               name: "templateList",
               component: () => import("@/pages/home/template-list")
-            }
+            },
+            {
+              path: "resource",
+              name: "resource",
+              component: () => import("@/pages/resource/Resource.vue")
+            },
+            {
+              path:"admin",
+              name:"admin",
+              component:() => import('@/pages/admin/Admin.vue')
+            },
+
           ]
         },
         {
@@ -54,7 +65,8 @@ export default new Router({
           path:"/template",
           name:"Template",
           component:() => import('@/pages/template/Index')
-        }
+        },
+
       ]
     },
     {

@@ -152,7 +152,11 @@ module.exports = app => ({
   async getPageDetail(id,isWx=false) {
     const { $model } = app;
     if(!id) {
-      return await $model.page.aggregate([{ $sample: { size: 1 } }])
+      return await $model.page.aggregate([ {
+        $match: {
+          videoUrl: { $ne: null }, // 限制条件：videoUrl 不能为 null 或空字符串
+        }
+      },{ $sample: { size: 1 } }])
     }
     return isWx? await $model.page.findById(id).lean().exec() :await $model.page.findById(id).exec();
   },
@@ -164,7 +168,8 @@ module.exports = app => ({
    */
   async setPublish(id) {
     const { $model } = app;
-    return await $model.page.findByIdAndUpdate(id, { $set: { isPublish: true } });
+    const data = await $model.page.findById(id)
+    return await $model.page.findByIdAndUpdate(id, { $set: { isPublish: !data.isPublish } });
   },
 
   /**
